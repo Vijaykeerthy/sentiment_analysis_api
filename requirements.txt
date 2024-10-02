@@ -1,0 +1,11 @@
+flask
+flasgger
+flask_restful
+pyairtable
+gunicorn
+numpy
+scikit-learn
+pickle5
+fastapi
+uvicorn
+streamlit

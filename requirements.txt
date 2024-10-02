@@ -1,4 +1,6 @@
 flask
 flasgger
 flask_restful
+textblob
+gunicorn
 pyairtable

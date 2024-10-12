@@ -20,8 +20,8 @@ def sentiment_analysis(text):
     sentiment_classification = 'positive' if positive_percentage > negative_percentage else 'negative' if negative_percentage > positive_percentage else 'neutral'
 
     return {
-        'positive_percentage': str(positive_percentage) + "%",
-        'negative_percentage': str(negative_percentage) + "%",
+        'positive_percentage': str(positive_percentage),
+        'negative_percentage': str(negative_percentage),
         'sentiment_classification': sentiment_classification
     }
 

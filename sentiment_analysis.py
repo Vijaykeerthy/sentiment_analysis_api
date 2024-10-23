@@ -12,16 +12,21 @@ def sentiment_analysis(text):
     sentiment = blob.sentiment
     polarity = sentiment.polarity
 
-    # Calculate positive and negative percentages
-    positive_percentage = int(max(polarity, 0) * 100)
-    negative_percentage = int(max(-polarity, 0) * 100)
+    # Calculate positive and negative percentages based on polarity (-1 to 1)
+    positive_percentage = (polarity + 1) / 2 * 100  # Maps polarity (-1 to 1) to (0 to 100)
+    negative_percentage = (1 - polarity) / 2 * 100  # Inverse mapping for negative polarity
 
     # Determine sentiment classification
-    sentiment_classification = 'positive' if positive_percentage > negative_percentage else 'negative' if negative_percentage > positive_percentage else 'neutral'
+    if polarity > 0:
+        sentiment_classification = 'positive'
+    elif polarity < 0:
+        sentiment_classification = 'negative'
+    else:
+        sentiment_classification = 'neutral'
 
     return {
-        'positive_percentage': str(positive_percentage) + "%",
-        'negative_percentage': str(negative_percentage) + "%",
+        'positive_percentage': f"{positive_percentage:.2f}%",
+        'negative_percentage': f"{negative_percentage:.2f}%",
         'sentiment_classification': sentiment_classification
     }
 
@@ -52,9 +57,6 @@ class SentimentAnalysis(Resource):
                             polarity:
                                 type: number
                                 description: The polarity of the sentiment
-                            subjectivity:
-                                type: number
-                                description: The subjectivity of the sentiment
                             sentiment_classification:
                                 type: string
                                 description: The sentiment classification as neutral, positive, or negative
@@ -74,7 +76,6 @@ class SentimentAnalysis(Resource):
         response = {
             'text': text,
             'polarity': sentiment.polarity,
-            'subjectivity': sentiment.subjectivity,
             **analysis_result  # Add sentiment analysis results including positive/negative percentages
         }
         return jsonify(response)
